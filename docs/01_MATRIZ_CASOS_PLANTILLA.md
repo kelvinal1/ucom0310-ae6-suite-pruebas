@@ -25,3 +25,7 @@ La matriz parte de las tres reglas principales solicitadas en la actividad: canc
 - **Alta:** CP-02, CP-07, CP-10, CP-11 y CP-12 porque validan límites, excepciones y efectos secundarios.
 - **Media:** CP-01, CP-03, CP-04, CP-05 y CP-06 porque cubren las reglas principales.
 - **Complementaria:** CP-08, CP-09 y CP-13 a CP-15 porque fortalecen bordes y caminos detectables mediante cobertura.
+
+## Nota sobre los casos derivados de cobertura
+
+Los casos CP-13 a CP-15 se mantuvieron en la matriz como riesgos complementarios del dominio. La primera ejecución de JaCoCo, realizada con las 13 pruebas de `ReservaServiceTest`, confirmó que esos caminos seguían parcialmente sin cobertura: el paquete de dominio mostraba 73 % de instrucciones y 50 % de ramas. Por eso esos casos se implementaron después del análisis mediante `ReservaTest` y no como parte de la primera ronda de pruebas del servicio.

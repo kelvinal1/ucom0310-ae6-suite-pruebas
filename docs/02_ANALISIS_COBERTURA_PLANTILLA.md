@@ -1,56 +1,101 @@
 # Análisis de cobertura JaCoCo - Ae6
 
-## Cómo generar la evidencia
+## Cómo se generó la evidencia
 
 ```bash
 mvn clean test
 ```
 
-Luego abrir:
+Luego se revisó el reporte generado en:
 
 ```text
 target/site/jacoco/index.html
 ```
 
-> Los porcentajes de esta sección deben copiarse del reporte generado en la máquina donde se ejecuta la entrega. No conviene inventarlos porque JaCoCo es parte de la evidencia reproducible.
+La primera medición se realizó después de completar las pruebas de `ReservaService`, incluyendo los escenarios de confirmación con Mockito, pero antes de agregar `ReservaTest`.
 
-## Resultado observado
+## Resultado de la primera medición
 
-### Primera ejecución: suite de `ReservaService`
+En ese momento la suite tenía **13 pruebas**, todas en verde.
 
-- Cobertura de líneas: **73%**
-- Cobertura de ramas: **50%**
-- Clase principal analizada: `ReservaService`
+### Resultado global
 
-La suite del servicio recorre los caminos relevantes de `puedeCancelar`, `calcularTotal` y `confirmar`: valores normales, límites, excepción por total negativo, reserva nula, disponibilidad verdadera y disponibilidad falsa.
+- Instrucciones cubiertas: **87 %** (`17 de 138` instrucciones sin cubrir).
+- Líneas cubiertas: **34 de 39**, equivalente aproximadamente a **87 %**.
+- Ramas cubiertas: **83 %** (`3 de 18` ramas sin cubrir).
+- Métodos sin cubrir: **3 de 11**.
+- Clases sin cubrir: **0 de 3**.
 
-### Hueco relevante detectado
+### `ReservaService`
 
-Aunque el servicio queda bien ejercitado, la entidad `Reserva` tiene comportamiento propio que no depende directamente del flujo de confirmación. En especial:
+`ReservaService` ya quedó completamente ejercitado por la suite del servicio:
 
-1. `Reserva.cancelar()` cambia el estado a `CANCELADA` y no era recorrido por la suite inicial del servicio.
-2. El constructor tiene ramas para `id` nulo/vacío y para `tipo == null`, que podían quedar parcialmente cubiertas.
+- Instrucciones: **100 %**.
+- Ramas: **100 %**.
+- Líneas: **21 de 21**.
+- Métodos: **4 de 4**.
 
-## Decisión tomada a partir del reporte
+Esto confirmó que los casos de cancelación, descuentos y confirmación estaban cubriendo tanto caminos normales como límites, excepciones y disponibilidad verdadera/falsa.
 
-Se agregó `ReservaTest` para cubrir esos caminos de dominio:
+### Paquete de dominio
 
-- una reserva nueva conserva id/tipo y empieza `PENDIENTE`;
-- tipo nulo usa `NORMAL`;
-- `cancelar()` cambia a `CANCELADA`;
-- id vacío y nulo generan excepción.
+El paquete `edu.uees.testing.domain` todavía mostraba huecos:
 
-### Resultado final
+- Instrucciones: **73 %**.
+- Ramas: **50 %**.
+- Líneas sin cubrir: **5 de 18**.
+- Métodos sin cubrir: **3 de 7**.
 
-Después de agregar esas pruebas, ejecutar nuevamente:
+## Hueco relevante detectado
+
+El reporte mostró que el problema ya no estaba en `ReservaService`, sino en comportamiento propio de `Reserva` que la suite del servicio no recorría completamente.
+
+Los caminos relevantes eran:
+
+1. `Reserva.cancelar()`, que cambia el estado a `CANCELADA`.
+2. La rama del constructor donde `tipo == null` y se utiliza `NORMAL` por defecto.
+3. Las validaciones de identificador `null` o vacío.
+4. Los getters y estado inicial de una reserva construida directamente.
+
+La matriz ya contemplaba estos riesgos como casos complementarios (CP-13 a CP-15), pero la primera ejecución de JaCoCo confirmó que esos caminos efectivamente seguían sin ser ejercitados. Por esa razón se implementaron después de revisar la cobertura.
+
+## Prueba añadida a partir del análisis
+
+Se agregó `ReservaTest` con cinco pruebas pequeñas de dominio:
+
+- una reserva nueva empieza en `PENDIENTE` y conserva sus datos;
+- un tipo nulo utiliza `NORMAL`;
+- `cancelar()` cambia el estado a `CANCELADA`;
+- un id vacío genera `IllegalArgumentException`;
+- un id nulo genera `IllegalArgumentException`.
+
+Después de agregar estas pruebas la suite pasó de **13 a 18 pruebas**.
+
+## Resultado final
+
+La segunda ejecución de:
 
 ```bash
 mvn clean test
 ```
 
-- Cobertura final de líneas: **100%**
-- Cobertura final de ramas: **100%**
+terminó con:
+
+```text
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+El reporte final de JaCoCo mostró:
+
+- Instrucciones: **100 %** (`0 de 138` sin cubrir).
+- Líneas: **100 %** (`0 de 39` sin cubrir).
+- Ramas: **100 %** (`0 de 18` sin cubrir).
+- Métodos: **100 %** (`0 de 11` sin cubrir).
+- Clases: **100 %** (`0 de 3` sin cubrir).
 
 ## Interpretación
 
-La cobertura sirve para encontrar código no ejercitado, pero un porcentaje alto no demuestra por sí solo que las reglas sean correctas. Una prueba puede ejecutar una línea sin verificar el resultado correcto. Por eso en esta entrega las aserciones se relacionan con reglas concretas del negocio y los mocks verifican únicamente efectos secundarios relevantes: guardar la reserva y enviar la confirmación.
+La mejora de cobertura fue útil porque permitió detectar comportamiento de dominio que no estaba siendo ejercitado por la suite del servicio. Sin embargo, el objetivo no fue perseguir el 100 % por sí mismo. Una línea puede ejecutarse sin que una prueba valide correctamente la regla asociada.
+
+Por eso las pruebas agregadas tienen aserciones concretas sobre estados, excepciones y valores por defecto. De igual forma, los mocks del servicio verifican solamente efectos secundarios que sí son parte del comportamiento esperado: guardar una reserva confirmada y enviar su confirmación.
