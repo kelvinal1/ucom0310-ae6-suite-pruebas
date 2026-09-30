@@ -10,8 +10,10 @@ Completar la suite de pruebas del módulo de reservas, proteger reglas normales,
 - Se agregaron pruebas JUnit 5 siguiendo estructura AAA.
 - Se usó `DisponibilidadClient` como Stub controlado con Mockito.
 - Se verificaron `ReservaRepository` y `Notificador` como Mocks en el flujo de confirmación.
-- Se añadió una segunda ronda de pruebas para comportamientos de `Reserva` detectables mediante el análisis de cobertura.
-- Se documentó cómo ejecutar la suite y cómo interpretar JaCoCo.
+- Se ejecutó una primera medición de cobertura con 13 pruebas.
+- A partir de los huecos observados en el dominio se agregó `ReservaTest`.
+- La suite final quedó en 18 pruebas verdes.
+- Se documentó el análisis antes/después de JaCoCo.
 
 ## Casos de prueba principales
 
@@ -26,6 +28,13 @@ Completar la suite de pruebas del módulo de reservas, proteger reglas normales,
 mvn clean test
 ```
 
+Resultado obtenido:
+
+```text
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
 Cobertura:
 
 ```text
@@ -34,16 +43,26 @@ target/site/jacoco/index.html
 
 ## Cobertura
 
-Completar antes de abrir el PR con los valores reales obtenidos de JaCoCo:
+Primera medición, antes de `ReservaTest`:
 
-- Líneas: **COMPLETAR**
-- Ramas: **COMPLETAR**
+- Líneas globales: **34 de 39 (~87 %)**.
+- Ramas globales: **83 %** (`3 de 18` sin cubrir).
+- `ReservaService`: **100 %** de instrucciones y ramas.
+- Dominio: **73 %** de instrucciones y **50 %** de ramas.
+
+Resultado final:
+
+- Líneas: **100 %** (`39 de 39`).
+- Ramas: **100 %** (`18 de 18`).
+- Instrucciones: **100 %** (`138 de 138`).
+- Métodos: **100 %** (`11 de 11`).
 
 El análisis detallado está en `docs/02_ANALISIS_COBERTURA_PLANTILLA.md`.
 
 ## Limitaciones
 
 - La disponibilidad, persistencia y notificación son interfaces y en esta actividad se prueban mediante dobles; no se realiza integración con implementaciones reales.
+- La cobertura del 100 % no implica que no puedan existir errores fuera de las reglas incluidas en el proyecto base.
 - La suite valida las reglas proporcionadas por el proyecto base y no agrega reglas de negocio nuevas.
 
 ## Autorrevisión
@@ -60,4 +79,4 @@ El análisis detallado está en `docs/02_ANALISIS_COBERTURA_PLANTILLA.md`.
 
 ## Uso de IA
 
-Se utilizó inteligencia artificial como apoyo para organizar la matriz de casos, revisar alternativas de pruebas y mejorar la redacción de la documentación. La implementación, ejecución de la suite, revisión de resultados, análisis de cobertura y validación final se realizaron sobre el proyecto de la actividad.
+Se utilizó inteligencia artificial como apoyo para organizar la matriz de casos, revisar alternativas de pruebas y mejorar la redacción de la documentación. También se utilizó de forma puntual para contrastar el uso de Stub/Mock. La integración de los cambios, ejecución de Maven, revisión de resultados, capturas de JaCoCo y validación final se realizaron directamente sobre el proyecto de la actividad.

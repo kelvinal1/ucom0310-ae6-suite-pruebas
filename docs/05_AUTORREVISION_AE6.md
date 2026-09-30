@@ -17,3 +17,11 @@ Completar antes de crear o entregar el Pull Request.
 - [ ] Actualicé porcentajes reales de JaCoCo en la documentación.
 - [ ] Actualicé la evidencia real de Maven en el reporte técnico.
 - [ ] Declaré el uso de IA de forma proporcional al apoyo recibido.
+
+## Evidencia técnica ya obtenida
+
+- Ejecución final: `18` pruebas, `0` fallos, `0` errores y `BUILD SUCCESS`.
+- Primera cobertura: `87 %` global de instrucciones y `83 %` de ramas.
+- Cobertura final: `100 %` de líneas, ramas, instrucciones y métodos.
+
+Los ítems anteriores no reemplazan la revisión manual de `Files changed`, del estado de Git y del Pull Request antes de la entrega.

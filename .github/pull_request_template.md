@@ -4,11 +4,11 @@ Proteger las reglas principales del módulo de reservas mediante una suite repro
 
 ## Cambios
 
-- [ ] Casos normales y de límite
-- [ ] Excepciones
-- [ ] Stub/Mock justificados
-- [ ] Cobertura JaCoCo analizada
-- [ ] Documentación actualizada
+- [x] Casos normales y de límite
+- [x] Excepciones
+- [x] Stub/Mock justificados
+- [x] Cobertura JaCoCo analizada
+- [x] Documentación actualizada
 
 ## Cómo verificar
 
@@ -16,14 +16,32 @@ Proteger las reglas principales del módulo de reservas mediante una suite repro
 mvn clean test
 ```
 
+Resultado obtenido:
+
+```text
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
 ## Cobertura
 
-- Líneas: COMPLETAR
-- Ramas: COMPLETAR
+Primera medición:
+
+- Líneas globales: 34 de 39 (~87 %)
+- Ramas globales: 83 %
+- `ReservaService`: 100 % instrucciones / 100 % ramas
+- Dominio: 73 % instrucciones / 50 % ramas
+
+Resultado final:
+
+- Líneas: **100 %**
+- Ramas: **100 %**
+- Instrucciones: **100 %**
+- Métodos: **100 %**
 
 ## Limitaciones
 
-Indicar los aspectos que todavía no están cubiertos o que usan dobles de prueba.
+Las dependencias de disponibilidad, persistencia y notificación se prueban con dobles. La suite es unitaria y no reemplaza pruebas de integración con implementaciones reales. Además, un 100 % de cobertura no implica ausencia total de defectos fuera de las reglas evaluadas.
 
 ## Autorrevisión
 
@@ -36,4 +54,4 @@ Indicar los aspectos que todavía no están cubiertos o que usan dobles de prueb
 
 ## Uso de IA
 
-IA usada como apoyo en organización, revisión de casos y redacción. La ejecución y validación final se revisaron sobre el proyecto.
+IA utilizada como apoyo para organización de casos, contraste puntual del uso de dobles y redacción. La ejecución, revisión de Maven, capturas de JaCoCo y validación final se realizaron directamente sobre el proyecto.

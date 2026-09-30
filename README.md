@@ -83,3 +83,24 @@ No se debe trabajar directamente en `main` porque el Pull Request forma parte de
 ## Uso de inteligencia artificial
 
 Se utilizó IA como apoyo para ordenar casos de prueba, revisar alternativas de uso de dobles y mejorar la redacción de la documentación. La ejecución, interpretación de resultados y revisión final deben realizarse sobre el proyecto local antes de entregar.
+
+## Resultado validado de Ae6
+
+La ejecución final realizada con Java 21 produjo:
+
+```text
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+La suite final contiene:
+
+- `ReservaServiceTest`: 13 pruebas.
+- `ReservaTest`: 5 pruebas.
+
+La primera medición de JaCoCo, antes de `ReservaTest`, mostró **87 % global de instrucciones**, **83 % de ramas**, mientras `ReservaService` ya tenía **100 %**. Después de agregar las pruebas de dominio derivadas del análisis, el resultado final fue:
+
+- líneas: **100 %** (`39/39`);
+- ramas: **100 %** (`18/18`);
+- instrucciones: **100 %** (`138/138`);
+- métodos: **100 %** (`11/11`).
